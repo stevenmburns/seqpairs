@@ -41,9 +41,6 @@ class Graph:
  
 
 def sequence_pair_to_constraint_graphs(N, perm0, perm1):
-    assert list(range(N)) == list(sorted(perm0))
-    assert list(range(N)) == list(sorted(perm1))
-
     inv0 = {}
     for (idx, x) in enumerate(perm0):
         inv0[x] = idx
@@ -51,6 +48,9 @@ def sequence_pair_to_constraint_graphs(N, perm0, perm1):
     inv1 = {}
     for (idx, x) in enumerate(perm1):
         inv1[x] = idx
+
+    assert len(inv0) == N
+    assert len(inv1) == N
 
     horiz = set()
     vert = set()
@@ -114,7 +114,7 @@ def test_cmp():
 
     v_chain( [0, 1, 2, 3])
     h_pairs( [4, 6], [5, 7])
-    v_pairs( [3], [4, 6, 5, 7])
+    v_pairs( [2], [4, 6, 5, 7])
     semantic()
  
     N = 8
