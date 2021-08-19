@@ -40,14 +40,37 @@ def test_A():
             for j in range(i+1,len(s)):
                 relation.add( (s[i], s[j]))
 
-    n = 4
+    n = 6
 
     product( [0], list(range(1,n+1)))
 
     #chain( list(range(1,n+1)))
-    product([1], [2])
-    product([2], [3])
+    product([1], [2,3,4])
+
     product([3], [4])
 
+    def invert( a):
+        ap = list(range(len(a)))
+        for idx, x in enumerate(a):
+            ap[x] = idx
+        return ap
+
+    perms = set()
     for a, ap in enum( n, relation):
-        print(a,ap)
+        assert ap == invert(a)
+        perms.add( tuple( a[1:]))
+
+    def check( a, relation):
+        for i in range(len(a)):
+            for j in range(i+1,len(a)):
+                if (a[j], a[i]) in relation:
+                    return False
+        return True
+
+    perms2 = set()
+    for a in itertools.permutations(list(range(1,n+1))):
+        if check( a, relation):
+            perms2.add( tuple( a))
+
+    assert perms == perms2
+    print(perms)
