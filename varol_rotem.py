@@ -85,8 +85,6 @@ def mk_relation(n):
             for j in range(i+1,len(s)):
                 relation.add( (s[i], s[j]))
 
-    n = 6
-
     product( [0], list(range(1,n+1)))
 
     #chain( list(range(1,n+1)))
@@ -129,13 +127,13 @@ def runit(n=10):
 
     return sum(1 for (a,ap) in iter(EnumIter( n, relation)))
 
-@pytest.mark.skip
 def test_AB(benchmark):
     count = benchmark(runit)
     assert functools.reduce(lambda a,b: a*b, range(1,11)) == count
 
 
-def test_check():
+@pytest.mark.parametrize("n,relation", examples)
+def test_check(n,relation):
 
     def invert( a):
         ap = list(range(len(a)))
@@ -144,7 +142,7 @@ def test_check():
         return ap
 
     perms = set()
-    for a, ap in enum( n, relation):
+    for a, ap in gen_enum( n, relation):
         assert ap == invert(a)
         perms.add( tuple( a[1:]))
 
