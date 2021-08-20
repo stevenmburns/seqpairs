@@ -147,21 +147,12 @@ def test_check(n,relation):
         assert ap == invert(a)
         perms.add( tuple( a[1:]))
 
-    def check( a, relation):
-        for i in range(len(a)):
-            for j in range(i+1,len(a)):
-                if (a[j], a[i]) in relation:
-                    return False
-        return True
-
-    def check2( ap, relation):
+    def check( ap, relation):
         return all( ap[a] < ap[b] for a,b in relation)
 
     perms2 = set()
     for a in itertools.permutations(list(range(1,n+1))):
-        cand = check( a, relation)
-        cand2 = check2( (invert((0,)+a)), relation)
-        assert cand == cand2
+        cand = check( (invert((0,)+a)), relation)
         if cand:
             perms2.add( tuple( a))
 
