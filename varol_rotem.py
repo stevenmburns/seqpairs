@@ -127,6 +127,7 @@ def runit(n=10):
 
     return sum(1 for (a,ap) in iter(EnumIter( n, relation)))
 
+@pytest.mark.skip
 def test_AB(benchmark):
     count = benchmark(runit)
     assert functools.reduce(lambda a,b: a*b, range(1,11)) == count
@@ -153,9 +154,15 @@ def test_check(n,relation):
                     return False
         return True
 
+    def check2( ap, relation):
+        return all( ap[a] < ap[b] for a,b in relation)
+
     perms2 = set()
     for a in itertools.permutations(list(range(1,n+1))):
-        if check( a, relation):
+        cand = check( a, relation)
+        cand2 = check2( (invert((0,)+a)), relation)
+        assert cand == cand2
+        if cand:
             perms2.add( tuple( a))
 
     assert perms == perms2
